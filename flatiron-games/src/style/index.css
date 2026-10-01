@@ -1,175 +1,434 @@
+/* ==========================================
+   1. MODERN SYSTEM RESET & VARIABLES
+   ========================================== */
+:root {
+  --bg-app: #0f111a;          /* Sleek, deep dark mode background */
+  --bg-sidebar: #151824;      /* Slightly lifted slate for navigation */
+  --card-bg: #1e2235;         /* Elegant card surface color */
+  --accent-pink: #ff6584;     /* Vibrant, modernized soft pink accent */
+  --text-main: #f3f4f6;       /* Bright off-white for crisp readability */
+  --text-muted: #9ca3af;      /* Soft gray for metadata and release dates */
+  --border-glow: rgba(255, 101, 132, 0.15);
+  --shadow-smooth: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --transition-fast: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
 
 body {
   margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  background-color: var(--bg-app);
+  color: var(--text-main);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  display:flex;
-  
+  overflow-x: hidden;
 }
 
-
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
-}
-
-
-
-p {
-  align-self: center;
-  padding: 0;
-  margin: 0;
-  margin-left: 5px;
-}
-
-.cards {
-  list-style: row;
-  flex-wrap: wrap;
-  display: flex;
-  justify-content: space-evenly;
-}
-
-.card {
-  margin: 1rem;
-  background-color: #D27685;
-  display: flex;
-  flex-direction: column;
-  width: 220px;
-  border-radius: 5px;
-  border: white, 20px;
-  box-shadow: inset 2px 1px 8px #ccc;
-  align-items: center;
-  
-}
-
-.card img {
-  align-self: center;
-  width: 200px;
-  min-height: 200px;
-  height: 200px;
-  object-fit:cover;
-  background-color: black;
-} 
-
-.gameName {
-  font-size: larger;
-  align-self: center;
-  max-height: 50px;
-  object-fit: contain;
-  max-width: 200px;
-}
- h1 {
-  text-align: center;
- }
-
-
-h4 {
-  justify-content: center;
-  text-align: center;
-  font-size: large;
-}
-
-.card button {
-  margin-bottom: 10px;
-  margin-top: 10px;
-  width: 150px;
-}
-
+/* ==========================================
+   2. MAIN APPLICATION GRID WORKSPACE
+   ========================================== */
 .app {
   display: flex;
   flex-direction: row;
   min-height: 100vh;
-  width: 100%;
+  width: 100vw;
 }
 
+/* Left Sidebar Frame */
 .fullpage-left {
-  min-height: 100vh;
-  height: 100%;
-  width:200px;
-  flex-grow: 0;
-  flex-shrink: 0;}
-
-.fullpage-right{
-  flex-grow:1;
-  display:flex;
-  flex-direction: column;
-  height: 100vh;
-}
-
-.fullpage-header{
-  min-height: 100px;
-  flex-grow: 0;
+  width: 260px;
+  background-color: var(--bg-sidebar);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
+  padding: 2.5rem 1.5rem;
   flex-shrink: 0;
-}
-
-.fullpage-content {
-  flex-grow: 1;
-  height: 100%;
-
 }
 
 .sidePanel {
-  position:sticky;
-  position:-webkit-sticky;
-  top: 30px;
-  height: 90vh;
-}
-
-.modal {
+  position: sticky;
+  top: 40px;
   display: flex;
   flex-direction: column;
+  gap: 2rem;
 }
 
-.modalHeader{
+/* Sidebar Navigation Items */
+.sidePanel a {
+  font-size: 1.1rem;
+  color: var(--text-muted);
+  text-decoration: none;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: var(--transition-fast);
+  display: flex;
+  align-items: center;
+}
+
+.sidePanel a:hover {
+  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.03);
+}
+
+/* Right Content Viewport */
+.fullpage-right {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background-color: var(--bg-app);
+  padding: 2.5rem 3rem;
+  overflow-y: auto;
+}
+
+.fullpage-header h2 {
+  font-size: 2.2rem;
+  font-weight: 800;
+  letter-spacing: -0.025em;
+  margin-bottom: 0.5rem;
+  background: linear-gradient(to right, var(--text-main), var(--text-muted));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gamesHeader {
+  font-size: 1.4rem;
+  color: var(--text-muted);
+  font-weight: 500;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ==========================================
+   3. MODERNIZED BULLETPROOF GAME TILES
+   ========================================== */
+/* The Responsive Grid Container */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 2rem;
+  list-style: none;
+  width: 100%;
+}
+
+/* Individual Card Styling */
+.card {
+  background-color: var(--card-bg);
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.03);
+  box-shadow: var(--shadow-smooth);
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: var(--transition-fast);
   position: relative;
-  flex-grow: 0;
-  flex-shrink: 0;
-  background-color: rgba(247, 141, 141, 0.643);
-  text-align: center;
-  flex-direction: row;
-
 }
+
+/* Elevates Card on Hover */
+.card:hover {
+  transform: translateY(-8px);
+  border-color: rgba(255, 101, 132, 0.3);
+  box-shadow: 0 20px 30px -10px rgba(0, 0, 0, 0.5), 0 0 15px var(--border-glow);
+}
+
+/* Game Image Handler */
+.card img {
+  width: 100%;
+  height: 240px;
+  object-fit: cover;
+  background-color: #000;
+  transition: var(--transition-fast);
+}
+
+.card:hover img {
+  transform: scale(1.03);
+}
+
+/* Metadata Text Elements inside Cards */
+.gameName {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-main);
+  padding: 1.25rem 1.25rem 0.5rem 1.25rem;
+  line-height: 1.4;
+}
+
+.card p {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  padding: 0 1.25rem 1.25rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Platform Metadata Tags */
+.card p span {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  width: fit-content;
+}
+
+/* Clean CTA Buttons */
+.card button {
+  margin: auto 1.25rem 1.25rem 1.25rem;
+  background: linear-gradient(135deg, var(--accent-pink), #e04d70);
+  color: white;
+  border: none;
+  padding: 0.8rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition-fast);
+  box-shadow: 0 4px 12px rgba(255, 101, 132, 0.2);
+}
+
+.card button:hover {
+  opacity: 0.95;
+  box-shadow: 0 6px 20px rgba(255, 101, 132, 0.4);
+}
+
+/* ==========================================
+   4. GLASSMORPHISM MODAL INFOCARD OVERLAY
+   ========================================== */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(10, 11, 22, 0.8);
+  backdrop-filter: blur(12px); /* Blur behind popup background */
+  -webkit-backdrop-filter: blur(12px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  padding: 2rem;
+}
+
 .modalBody {
+  background: #1a1d30;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  max-width: 900px;
+  width: 100%;
+  border-radius: 24px;
+  box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.6);
   display: flex;
   flex-direction: row;
-  text-align: center;
+  overflow: hidden;
 }
 
 .modalMainImage {
-  display:flex;
-  width: 50%;
-  object-fit:contain;
-
+  width: 45%;
+  object-fit: cover;
+  background: #000;
 }
+
 .modalRight {
+  width: 55%;
+  padding: 2.5rem;
   display: flex;
   flex-direction: column;
-  width: 50%;
+  gap: 1.5rem;
 }
 
-.modalText{
-  width: 100%;
-  display: flex;
-  flex-direction: row;
-  flex-wrap: wrap;
-  justify-content: space-evenly;
-  font-size: x-large;
-  gap: 12px;
-
+.modalHeader h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
 }
 
+.modalText {
+  color: var(--text-muted);
+  line-height: 1.6;
+  font-size: 1.05rem;
+}
 
+/* Extra Screenshot Previews */
 .modalScreenShots {
-  width: 200px;
-object-fit: cover;}
-
-
-
-a {
-  font-size: x-large;
-  padding: 5px;
+  width: 110px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: var(--transition-fast);
 }
 
+.modalScreenShots:hover {
+  transform: scale(1.05);
+  border-color: var(--accent-pink);
+}
+
+/* Responsive Handling for Smaller Monitors */
+@media (max-width: 900px) {
+  .app { flex-direction: column; }
+  .fullpage-left { width: 100%; min-height: auto; border-right: none; border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
+  .modalBody { flex-direction: column; }
+  .modalMainImage { width: 100%; height: 250px; }
+  .modalRight { width: 100%; }
+}
+
+/* ==========================================
+   5. HEADER & TITLE BAR LOCKS
+   ========================================== */
+.pageHeader {
+  font-size: 2.4rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  margin-top: 0.5rem;
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Clean architectural divider line */
+  background: linear-gradient(135deg, #ffffff, #9ca3af);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: 100%;
+}
+
+.fullGameList {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.gamesHeader {
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  letter-spacing: -0.01em;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+  text-transform: uppercase; /* Clean contemporary micro-typography styling */
+}
+
+/* Fixes spacing inside empty placeholder layout divisions */
+.highestRatedList {
+  margin-bottom: 1.5rem;
+}
+/* ==========================================
+   6. CENTERED TITLEBAR & CONTENT ALIGNMENT
+   ========================================== */
+
+/* Centers the primary page header (Home) */
+.pageHeader {
+  text-align: center;
+  margin-left: auto;
+  margin-right: auto;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  background: linear-gradient(135deg, #ffffff, #ff6584); /* Blends into your pink accent color */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  width: 100%;
+  max-width: 1200px; /* Keeps the bottom divider bar from stretching too far */
+}
+
+/* Centers the sub-header (All Games) */
+.gamesHeader {
+  text-align: center;
+  color: var(--text-muted);
+  margin-top: 2rem;
+  margin-bottom: 2rem;
+  letter-spacing: 0.05em;
+}
+
+/* Centers the entire collection grid inside the main layout content page */
+.cards {
+  justify-content: center;     /* Centers the grid columns on wide monitors */
+  justify-items: center;       /* Centers individual card bodies inside their cells */
+  max-width: 1400px;           /* Prevents the cards from blowing out too wide */
+  margin: 0 auto;              /* Centers the container boundaries */
+}
+/* ==========================================
+   7. GLOBAL UPPER HEADER LAYOUT CENTER
+   ========================================== */
+
+/* Centers the parent structural wrapper block for the header component */
+.fullpage-header {
+  display: flex;
+  justify-content: center;  /* Centers your <Header /> content horizontally */
+  align-items: center;      /* Centers it vertically within the 100px bar */
+  width: 100%;
+  padding-top: 1.5rem;
+  padding-bottom: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05); /* Adds a clean division line */
+}
+
+/* If your actual title inside <Header /> is an h1, center the raw text element */
+.fullpage-header h1 {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #ffffff, #ff6584); /* Modern glowing color split */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 auto;
+}
+/* ==========================================
+   8. MODERN HIGH-GLOSS SEARCH BAR COMPONENTS
+   ========================================== */
+
+/* The main container wrapping your search input elements */
+.searchBar {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* Style configuration for the actual text input box */
+.searchBar input[type="text"] {
+  width: 100%;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.95rem;
+  font-family: inherit;
+  color: var(--text-main);
+  background-color: rgba(255, 255, 255, 0.03); /* Translucent input face blending */
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 12px;                          /* Modern smooth radiused edges */
+  outline: none;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.2);
+  transition: var(--transition-fast);
+}
+
+/* Enhances input visuals when the user clicks inside to type */
+.searchBar input[type="text"]:focus {
+  background-color: rgba(255, 255, 255, 0.06);
+  border-color: var(--accent-pink);             /* Accent glow outline snaps active */
+  box-shadow: 0 0 0 4px var(--border-glow), inset 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Modern styling for the search placeholder typography text */
+.searchBar input[type="text"]::placeholder {
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* If your SearchBar component features an activation or submit button */
+.searchBar button {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.05);
+  color: var(--text-main);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.75rem;
+  border-radius: 10px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  transition: var(--transition-fast);
+}
+
+.searchBar button:hover {
+  background: var(--accent-pink);
+  color: #ffffff;
+  border-color: var(--accent-pink);
+  box-shadow: 0 4px 12px rgba(255, 101, 132, 0.2);
+}

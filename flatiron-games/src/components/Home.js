@@ -1,4 +1,4 @@
-import React from "react";
+import * as react from "react";
 import GameCard from "./GameCard";
 
 function Home({ games, handleModalClick }) {
